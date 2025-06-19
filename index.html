@@ -10,6 +10,7 @@
       height: 100%;
       overflow: hidden;
     }
+
     .bg_heart {
       position: fixed;
       top: 0; left: 0;
@@ -18,6 +19,7 @@
       background-size: cover;
       z-index: -1;
     }
+
     .container {
       position: absolute;
       top: 0; left: 0;
@@ -32,11 +34,7 @@
       padding: 20px;
       box-sizing: border-box;
     }
-    .profile {
-      display: flex;
-      align-items: center;
-      margin-bottom: 20px;
-    }
+
     .circular-image {
       width: 190px;
       height: 190px;
@@ -46,19 +44,32 @@
       box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
       transition: transform 0.3s ease;
     }
+
     .circular-image:hover {
       transform: scale(1.05);
     }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-direction: column;
+    }
+
     .profile h2 {
       font-size: 24px;
-      margin: 0;
+      margin: 10px 0 0;
+      font-weight: bold;
+      font-family: 'Segoe UI', cursive;
     }
+
     .heart {
       position: absolute;
       top: -50%;
       transform: rotate(-45deg);
       animation: love var(--anim) ease forwards;
     }
+
     .heart:before, .heart:after {
       content: "";
       position: absolute;
@@ -66,6 +77,7 @@
       background: inherit;
       border-radius: 50%;
     }
+
     .heart:before { top: -50%; left: 0; }
     .heart:after  { top: 0; right: -50%; }
 
@@ -110,67 +122,68 @@
       from { opacity: 0; }
       to { opacity: 1; }
     }
+
+    #tapPrompt {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 20px;
+      font-family: cursive;
+      font-size: 18px;
+      z-index: 1000;
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    audio { display: none; }
   </style>
 </head>
 <body>
 
   <div class="bg_heart"></div>
 
+  <!-- 🎵 Tap Prompt -->
+  <div id="tapPrompt">Tap anywhere to feel the magic 🎵</div>
+
   <div class="container">
     <div class="profile">
       <img src="profile3.jpg" alt="Profile" class="circular-image" />
-      <h2>Ashutosh Mishra</h2>
+      <h2><b>Chitranshi</b></h2>
     </div>
     <h2 id="text1"></h2>
 
+    <!-- ❤️ YES/NO Buttons -->
     <div id="response-buttons">
       <button class="yes" onclick="alert('You said YES 😍')">Yes</button>
       <button class="no" onclick="alert('You said No 😢')">No</button>
     </div>
   </div>
 
-  <!-- 🎵 Music section with autoplay + fallback -->
+  <!-- 🎶 Audio -->
   <audio id="bgMusic" loop>
-    <source src="https://dl.sndup.net/ybqt/kaun_tujhe.mp3" type="audio/mpeg">
+    <source src="kaun_tujhe.mp3" type="audio/mpeg" />
     Your browser does not support the audio tag.
   </audio>
 
-  <script>
-    window.addEventListener('load', function () {
-      const audio = document.getElementById('bgMusic');
-      const playPromise = audio.play();
-
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          const btn = document.createElement('button');
-          btn.innerText = "🎵 Tap to Play Music";
-          btn.style.position = 'fixed';
-          btn.style.top = '20px';
-          btn.style.left = '50%';
-          btn.style.transform = 'translateX(-50%)';
-          btn.style.padding = '10px 20px';
-          btn.style.fontSize = '16px';
-          btn.style.borderRadius = '25px';
-          btn.style.border = 'none';
-          btn.style.background = '#ff5e99';
-          btn.style.color = 'white';
-          btn.style.cursor = 'pointer';
-          btn.style.zIndex = '1000';
-          document.body.appendChild(btn);
-
-          btn.addEventListener('click', () => {
-            audio.play();
-            btn.remove();
-          });
-        });
-      }
-    });
-  </script>
-
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
-    // Floating hearts
-    setInterval(function(){
+    // Play music on first user interaction
+    document.addEventListener("click", function () {
+      const music = document.getElementById("bgMusic");
+      music.play();
+      document.getElementById("tapPrompt").style.display = "none";
+    }, { once: true });
+
+    // Floating hearts animation
+    setInterval(function () {
       const r_num = Math.floor(Math.random() * 40) + 1;
       const r_size = Math.floor(Math.random() * 65) + 10;
       const r_left = Math.floor(Math.random() * 100) + 1;
@@ -181,7 +194,7 @@
         width: r_size + "px",
         height: r_size + "px",
         left: r_left + "%",
-        background: `rgba(255, ${r_bg-25}, ${r_bg}, 1)`,
+        background: `rgba(255, ${r_bg - 25}, ${r_bg}, 1)`,
         "--anim": `${r_time}s`
       });
 
@@ -189,7 +202,7 @@
         width: (r_size - 10) + "px",
         height: (r_size - 10) + "px",
         left: (r_left + r_num) + "%",
-        background: `rgba(255, ${r_bg-25}, ${r_bg+25}, 1)`,
+        background: `rgba(255, ${r_bg - 25}, ${r_bg + 25}, 1)`,
         "--anim": `${r_time + 5}s`
       });
 
@@ -200,8 +213,8 @@
       }, (r_time + 5) * 1000 + 1000);
     }, 500);
 
-    // Typing effect
-    const txt1 = `Hi Chitranshii.....!  << Now I wan't to say something special to you. <<< Please read everything carefully...! > When I saw you for the first time < You seemed something Special to me. << As the days go < you got closer to me....! << I don't know the reason why your thoughts always resonate inside my mind...! > Everything about you is always interesting for me...! << I'm a bit nervous, because I haven't said these words to anyone, and I won’t say to anyone in future...! > I Love my Parents more than anything else in this world....! << Now You are the only person whom I love equally with my parents....! >I Love You < SweetHeart.....! | <<<< Give me One chance to Prove my Love ...!`;
+    // Typing message
+    const txt1 = `Hi Chitranshii.....!  << I just wanted to say something special to you. << Please read this till the end — it's from my heart. << When I saw you for the first time... << You seemed... different, special. << And day by day, you got closer to my thoughts. << I don’t know why, but your smile, your presence... << They echo inside me like a beautiful song. << You're not just someone I like... << You're the one I always think about — day and night. << I never said these words to anyone before... << And I don’t plan to say them to anyone else ever. << I love my parents more than anything in this world. << And you’re the only one I love equally with them. << I love you, Sweetheart... 💖 << Will you give me a chance to prove it?`;
 
     let i = 0;
     const speed = 50;
@@ -211,10 +224,6 @@
         const c = txt1.charAt(i);
         if (c === "<") {
           $('#text1').append('<br>');
-        } else if (c === ">") {
-          $('#text1').html('');
-        } else if (c === "|") {
-          $('.bg_heart').css('background-image', "url('https://wallpaperaccess.com/full/2967849.jpg')");
         } else {
           $('#text1').append(c);
         }
