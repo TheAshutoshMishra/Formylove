@@ -37,27 +37,18 @@
       align-items: center;
       margin-bottom: 20px;
     }
-/*     .profile img {
-      width: 160px;
-      height: 160px;
-      border-radius: 50%;
-      border: 2px solid white;
-      margin-right: 12px;
-    } */
     .circular-image {
-  width: 190px;
-  height: 190px;               /* ✅ Same as width for perfect circle */
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid #fff;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease;
-}
-.circular-image:hover {
-  transform: scale(1.05);      /* Optional: subtle zoom on hover */
-}
-
-
+      width: 190px;
+      height: 190px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #fff;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+    }
+    .circular-image:hover {
+      transform: scale(1.05);
+    }
     .profile h2 {
       font-size: 24px;
       margin: 0;
@@ -119,10 +110,6 @@
       from { opacity: 0; }
       to { opacity: 1; }
     }
-
-    audio {
-      display: none;
-    }
   </style>
 </head>
 <body>
@@ -131,30 +118,58 @@
 
   <div class="container">
     <div class="profile">
-<!--       <img src="profile1.jpg" alt="Ashutosh Mishra"> -->
       <img src="profile3.jpg" alt="Profile" class="circular-image" />
-
       <h2>Ashutosh Mishra</h2>
     </div>
     <h2 id="text1"></h2>
 
-    <!-- ❤️ YES/NO Buttons -->
     <div id="response-buttons">
       <button class="yes" onclick="alert('You said YES 😍')">Yes</button>
       <button class="no" onclick="alert('You said No 😢')">No</button>
     </div>
   </div>
 
-  <audio autoplay loop>
-    <!-- <source src="https://dl.sndup.net/4jsx/romantic-instrumental.mp3" type="audio/mpeg">
-    Your browser does not support the audio tag. -->
+  <!-- 🎵 Music section with autoplay + fallback -->
+  <audio id="bgMusic" loop>
     <source src="https://dl.sndup.net/ybqt/kaun_tujhe.mp3" type="audio/mpeg">
-
+    Your browser does not support the audio tag.
   </audio>
+
+  <script>
+    window.addEventListener('load', function () {
+      const audio = document.getElementById('bgMusic');
+      const playPromise = audio.play();
+
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          const btn = document.createElement('button');
+          btn.innerText = "🎵 Tap to Play Music";
+          btn.style.position = 'fixed';
+          btn.style.top = '20px';
+          btn.style.left = '50%';
+          btn.style.transform = 'translateX(-50%)';
+          btn.style.padding = '10px 20px';
+          btn.style.fontSize = '16px';
+          btn.style.borderRadius = '25px';
+          btn.style.border = 'none';
+          btn.style.background = '#ff5e99';
+          btn.style.color = 'white';
+          btn.style.cursor = 'pointer';
+          btn.style.zIndex = '1000';
+          document.body.appendChild(btn);
+
+          btn.addEventListener('click', () => {
+            audio.play();
+            btn.remove();
+          });
+        });
+      }
+    });
+  </script>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
-    // Create floating hearts
+    // Floating hearts
     setInterval(function(){
       const r_num = Math.floor(Math.random() * 40) + 1;
       const r_size = Math.floor(Math.random() * 65) + 10;
@@ -185,9 +200,9 @@
       }, (r_time + 5) * 1000 + 1000);
     }, 500);
 
-    // Typewriter effect
-    const txt1 = `Hi Chitranshii.....!  <<               Now I wan't to say something special to you. <<<                So , Please read everything carefully...!                                                                           > When I saw you for the first time < You seems something Special to me.  <<                  As the days goes < you get closer to me....! <<                           I don't know the reason why your thoughts always resonates inside my mind...!                                                     > Everything about you is always interesting for me...!                     << I am somewhat nervous Because I haven't said these words to anyone and I won't say to anyone in future...!                                                     > I Love my Parents so much than anything else in this world....!                    << Now You are the only person  whom I love equally with my parents....!                                                             >I Love U <SweetHeart.....! |                  <<<< Give me One chance to Prove my Love ...!`;
-    
+    // Typing effect
+    const txt1 = `Hi Chitranshii.....!  << Now I wan't to say something special to you. <<< Please read everything carefully...! > When I saw you for the first time < You seemed something Special to me. << As the days go < you got closer to me....! << I don't know the reason why your thoughts always resonate inside my mind...! > Everything about you is always interesting for me...! << I'm a bit nervous, because I haven't said these words to anyone, and I won’t say to anyone in future...! > I Love my Parents more than anything else in this world....! << Now You are the only person whom I love equally with my parents....! >I Love You < SweetHeart.....! | <<<< Give me One chance to Prove my Love ...!`;
+
     let i = 0;
     const speed = 50;
 
@@ -206,7 +221,6 @@
         i++;
         setTimeout(typeWriter, speed);
       } else {
-        // Show YES/NO buttons after typing is done
         $("#response-buttons").css("display", "block");
       }
     }
