@@ -129,8 +129,8 @@
     <h2 id="text1"></h2>
 
     <div id="response-buttons">
-      <button class="yes" onclick="alert('You said YES 😍')">Yes</button>
-      <button class="no" onclick="alert('You said No 😢')">No</button>
+      <button class="yes" onclick="sendYes()">Yes</button>
+      <button class="no" onclick="sendNo()">I need some time</button>
     </div>
   </div>
 
@@ -152,6 +152,18 @@
       music.play();
       document.getElementById("tapPrompt").style.display = "none";
     }, { once: true });
+
+    function sendYes() {
+      alert('You said YES 😍');
+      const msg = "Hi Ashutosh, I feel the same ❤️";
+      window.open(`https://wa.me/918090147505?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    function sendNo() {
+      alert('I understand 🌸');
+      const msg = "Hi Ashutosh, I need some time but till then let’s be friends 🌸";
+      window.open(`https://wa.me/918090147505?text=${encodeURIComponent(msg)}`, '_blank');
+    }
   </script>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
